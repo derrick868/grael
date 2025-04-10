@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} Admin - Grael Interiors {% endblock %}
+
+{% block content %}
+<div class="container my-5">
+
+    <h1 class="text-center mb-5" style="color: #f5a623;">Admin Dashboard</h1>
+
+    <!-- Admin Navigation Cards -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">Manage Items</h5>
+                    <p class="card-text">Add, edit, or delete products in your shop.</p>
+                    <a href="/add-shop-items" class="btn btn-primary">Add New Item</a>
+                    <a href="/shop-items" class="btn btn-secondary mt-2">View Shop Items</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-info">Manage Orders</h5>
+                    <p class="card-text">View and process customer orders.</p>
+                    <a href="/view-orders" class="btn btn-info">View Orders</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-warning">Manage Clients</h5>
+                    <p class="card-text">View and manage all customer details.</p>
+                    <a href="/customers" class="btn btn-warning">View Clients</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Actions or Notifications -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <strong>Welcome to the Admin Dashboard!</strong> Here you can manage your shop's products, orders, and clients.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

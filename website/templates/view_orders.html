@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block title %} View Orders {% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">View Orders</h2>
+    
+    <div style="overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%;">
+        <table class="table table-striped table-bordered table-dark" style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Customer Email</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Price (KSh)</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Product Picture</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.id }}</td>
+                    <td>{{ order.customer.username }}</td>
+                    <td>{{ order.customer.email }}</td>
+                    <td>{{ order.product.product_name }}</td>
+                    <td>KSh {{ order.price }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td><img src="{{ order.product.product_picture }}" alt="{{ order.product.product_name }}" class="img-thumbnail" style="height: 50px; width: 50px; border-radius: 2px;"></td>
+               <td>
+    <span class="badge 
+        {% if order.status == 'Pending' %}
+            bg-warning
+        {% elif order.status == 'Accepted' %}
+            bg-primary
+        {% elif order.status == 'Out for delivery' %}
+            bg-orange
+        {% elif order.status == 'Delivered' %}
+            bg-success
+        {% elif order.status == 'Canceled' %}
+            bg-danger
+        {% else %}
+            bg-secondary
+        {% endif %}">
+        {{ order.status }}
+    </span>
+</td>
+
+                    <td>
+                        <div class="d-flex">
+                            <a href="/update-order/{{ order.id }}" class="btn btn-warning btn-sm me-2">Update Status</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

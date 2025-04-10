@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %} Add Shop Items {% endblock %}
+
+{% block content %}
+
+<!-- Main container for the form -->
+<div class="col-sm-6 offset-sm-3" style="background-color: white; border-radius: 10px; margin-top: 30px; padding: 30px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+
+    <h2 class="text-center mb-4">Add New Product</h2>
+    
+    <!-- Form starts here -->
+    <form method="POST" enctype="multipart/form-data">
+        
+        {{ form.hidden_tag() }}
+
+        <!-- Product Name -->
+        <div class="mb-3">
+            <label for="product_name" class="form-label"><h4>Product Name</h4></label>
+            {{ form.product_name(class="form-control", placeholder="Enter product name") }}
+        </div>
+
+        <!-- Previous Price -->
+        <div class="mb-3">
+            <label for="previous_price" class="form-label"><h4>Previous Price</h4></label>
+            {{ form.previous_price(class="form-control", placeholder="Enter previous price") }}
+        </div>
+
+        <!-- Current Price -->
+        <div class="mb-3">
+            <label for="current_price" class="form-label"><h4>Current Price</h4></label>
+            {{ form.current_price(class="form-control", placeholder="Enter current price") }}
+        </div>
+
+        <!-- In Stock -->
+        <div class="mb-3">
+            <label for="in_stock" class="form-label"><h4>In Stock</h4></label>
+            {{ form.in_stock(class="form-control", placeholder="Enter stock quantity") }}
+        </div>
+
+        <!-- Product Picture -->
+        <div class="mb-3">
+            <label for="product_picture" class="form-label"><h4>Product Picture</h4></label>
+            {{ form.product_picture(class="form-control") }} <!-- No placeholder for file input -->
+        </div>
+
+        <!-- Flash Sale -->
+        <div class="mb-3">
+            <label for="flash_sale" class="form-label"><h4>Flash Sale</h4></label>
+            {{ form.flash_sale(class="form-check-input") }}
+        </div>
+
+        <!-- Add Product Button -->
+        <div class="mb-3 text-center">
+            {{ form.add_product(class="btn btn-primary btn-lg") }}
+        </div>
+
+    </form>
+</div>
+
+{% endblock %}

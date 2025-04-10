@@ -1,0 +1,51 @@
+{% extends 'forms.html' %}
+
+{% block title %} Update shop items {% endblock %}
+
+
+{% block content %}
+
+<div class="col-sm-5 offset-sm-3" style="background-color: white; border-radius: 10px; margin-top: 20px;">
+
+    <form style="padding: 30px;" method="POST" enctype="multipart/form-data">
+        
+    
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label"><h4>Product name</h4></label>
+            {{ form.product_name}}
+        </div>
+
+          <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label"><h4>Previous Price</h4></label>
+            {{ form.previous_price}}
+        </div>
+
+     <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label"><h4>Current price</h4></label>
+            {{ form.current_price}}
+        </div>
+           <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label"><h4>In stock</h4></label>
+            {{ form.in_stock}}
+        </div>
+           <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label"><h4>Picture</h4></label>
+            {{ form.product_picture()}}
+        </div>
+           <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label"><h4>Flash sale</h4></label>
+            {{ form.flash_sale}}
+        </div>
+        <div class="mb-3">
+            <label for="exampleInputEmail" class="form-label"><h4></label>
+            {{ form.update_product()}}
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}
+
+   

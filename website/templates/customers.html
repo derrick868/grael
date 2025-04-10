@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %} Customers {% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center text-dark mb-4">Customers</h2>
+
+    <div class="table-responsive">
+        <table class="table table-dark table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Customer ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Date Joined</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customers %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.username }}</td>
+                    <td>{{ customer.email }}</td>
+                    <td>{{ customer.date_joined.strftime('%B %d, %Y') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

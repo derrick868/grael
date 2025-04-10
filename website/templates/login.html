@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - Grael Interiors{% endblock %}
+
+{% block content %}
+<section class="container py-5" style="position: relative; background-image: url('{{ url_for('static', filename='assets/crock1.jpg') }}'); background-size: cover; background-position: center;">
+    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); z-index: -1;"></div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-light rounded-3 p-4" style="background-color: #f8f9fa;">
+                <div class="card-body" style="background-color: #ffffff;">
+                    <h3 class="text-center mb-4" style="font-size: 1.8rem; color: #333;">Login to start <br> Shopping</h3>
+                    <hr class="my-4">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+
+                        <!-- Email Section -->
+                        <div class="mb-4">
+                            <label for="email" class="form-label" style="font-size: 1.1rem; color: #333;"><strong>Email Address</strong></label>
+                            {{ form.email(class="form-control rounded-pill border-2", placeholder="Enter your email address", style="background-color: #f1f1f1;") }}
+                        </div>
+
+                        <!-- Password Section -->
+                        <div class="mb-4">
+                            <label for="password" class="form-label" style="font-size: 1.1rem; color: #333;"><strong>Password</strong></label>
+                            {{ form.password(class="form-control rounded-pill border-2", placeholder="Enter your password", style="background-color: #f1f1f1;") }}
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="/sign-up" class="btn btn-link text-decoration-none" style="font-size: 1rem; color: #f5a623;">Don't have an account? Sign Up</a>
+                            {{ form.submit(class="btn btn-primary rounded-pill px-4", style="font-size: 1.1rem; background-color: #1d4d7e; border-color: #1d4d7e;") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
