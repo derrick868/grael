@@ -10,23 +10,70 @@
         <table class="table table-dark table-striped table-bordered">
             <thead>
                 <tr>
-                    <th scope="col">Customer ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
                     <th scope="col">Date Joined</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {% for customer in customers %}
                 <tr>
-                    <td>{{ customer.id }}</td>
                     <td>{{ customer.username }}</td>
                     <td>{{ customer.email }}</td>
                     <td>{{ customer.date_joined.strftime('%B %d, %Y') }}</td>
+
+                    <!-- Role Dropdown -->
+                    <td>
+                        <select class="form-select form-select-sm role-select" data-id="{{ customer.id }}">
+                            <option value="true" {% if customer.is_admin %}selected{% endif %}>Admin</option>
+                            <option value="false" {% if not customer.is_admin %}selected{% endif %}>Client</option>
+                        </select>
+                    </td>
+
+                    <!-- Delete Button -->
+                    <td>
+                        <div class="d-flex">
+                            <a href="/delete-customer/{{ customer.id }}" class="btn btn-danger btn-sm"
+                               onclick="return confirm('Are you sure you want to delete this client?')">Delete</a>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+
+<!-- JS to Handle Role Change -->
+<script>
+document.querySelectorAll('.role-select').forEach(select => {
+    select.addEventListener('change', function () {
+        const customerId = this.dataset.id;
+        const newRole = this.value;
+
+        fetch(`/update-role/${customerId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                // Include if using Flask-WTF or Django CSRF
+            },
+            body: JSON.stringify({ is_admin: newRole })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Role updated successfully!');
+            } else {
+                alert('Failed to update role.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Something went wrong.');
+        });
+    });
+});
+</script>
 {% endblock %}

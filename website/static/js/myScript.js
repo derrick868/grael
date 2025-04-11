@@ -70,3 +70,6 @@ $('.remove-cart').click(function(){
 
 
 })
+
+
+

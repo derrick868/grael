@@ -1,4 +1,4 @@
-{% extends 'forms.html' %}
+{% extends 'base.html' %}
 
 {% block title %} Home {% endblock %}
 
@@ -23,7 +23,7 @@
             <div class="row">
 
                 <div class="col-sm-8">
-                    <div class="card m-2">
+                    <div class="card m-2" style="text-decoration-color: black;">
 
                         <h3>{{ customer.username }}</h3>
                         <p>Email: {{ customer.email }}</p>

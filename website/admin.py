@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, send_from_directory, redirect
+from flask import Blueprint, render_template, flash, send_from_directory, redirect,request,jsonify,url_for
 from flask_login import login_required, current_user
 from .forms import ShopItemsForm, OrderForm
 from werkzeug.utils import secure_filename
@@ -183,4 +183,38 @@ def display_customers():
     if current_user.status == 'admin':
         customers = Customer.query.all()
         return render_template('customers.html', customers=customers)
+    return render_template('404.html')
+
+
+@admin.route('/update-role/<int:id>', methods=['POST'])
+def update_role(id):
+    customer = Customer.query.get_or_404(id)
+    data = request.get_json()
+    if 'is_admin' in data:
+        customer.is_admin = data['is_admin'].lower() == 'true'
+        db.session.commit()
+        return jsonify({'success': True})
+    return jsonify({'success': False}), 400
+
+@admin.route('/delete-customer/<int:customer_id>', methods=['GET', 'POST'])
+@login_required
+def delete_customer(customer_id):
+    if current_user.status == 'admin':
+        try:
+            customer_to_delete = Customer.query.get(customer_id)
+
+            # ✅ Prevent deleting yourself
+            if customer_to_delete.id == current_user.id:
+                flash("You can't delete yourself!", 'warning')
+                return redirect(url_for('customers'))
+
+            db.session.delete(customer_to_delete)
+            db.session.commit()
+            flash('Client deleted successfully!', 'success')
+        except Exception as e:
+            print('Client not deleted:', e)
+            flash('Client could not be deleted!', 'danger')
+        
+        return redirect('/customers')
+
     return render_template('404.html')

@@ -16,13 +16,10 @@ def home():
 
     return render_template('index.html', items=items, cart=Cart.query.filter_by(customer_link=current_user.id).all()
                            if current_user.is_authenticated else [])
-def home():
+@views.route('/about')
+def about():
+    return render_template('about.html')
 
-    items = Product.query.all()
-
-
-
-    return render_template('index.html', items=items)
 
 @views.route('/add-to-cart/<int:item_id>')
 @login_required

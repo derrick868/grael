@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Grael Interiors  {% block title %} {% endblock %}</title>
+        <title>Graell Interiors  {% block title %} {% endblock %}</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{{ url_for('static',filename='assets/favicon.ico')}}" />
         <!-- Bootstrap icons-->
@@ -128,6 +128,37 @@
             body {
     background-color: lightgrey;    font-family: 'Ubuntu', sans-serif;
 }
+/* Make the search input responsive */
+.navbar .form-control {
+    width: 100%; /* Takes up the full available width */
+    max-width: 400px; /* Optional: maximum width */
+    border-radius: 25px;
+    border: 2px solid #1d4d7e;
+}
+footer .btn {
+    font-size: 1.8rem;  /* Adjust icon size */
+    border-radius: 50%;  /* Make it circular */
+    padding: 10px;  /* Add some padding */
+    background-color: #1d4d7e;  /* Set background color */
+    color: white;  /* Set icon color */
+    transition: background-color 0.3s ease;  /* Smooth hover effect */
+}
+
+footer .btn:hover {
+    background-color: #155a8a;  /* Hover effect */
+    color: #fff;  /* Ensure text remains white on hover */
+}
+
+footer .text-white a {
+    text-decoration: none;  /* Remove underline from links */
+    color: white;  /* Make sure email and phone links are white */
+    transition: color 0.3s ease;
+}
+
+footer .text-white a:hover {
+    color: #f5a623;  /* Change to a golden yellow on hover */
+}
+
 
         </style>  
     </head>
@@ -135,23 +166,26 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="/">Grael Interiors</a>
+                <a class="navbar-brand" href="/">Graell Interiors</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item"><a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="/about">About</a></li>
+
                         {% if current_user.status == 'admin' %}
                             <li class="nav-item"><a class="nav-link" href="/admin-page">Admin</a></li>
                             
                         {% endif %}
                         <!-- Search Form -->
-                        <li class="nav-item">
-                            <form class="d-flex" role="search" action="/search" style="margin-right: 170px;" method="POST">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
-                                <button class="btn btn-outline-light" type="submit">Search</button>
-                            </form>
-                        </li>
+                  <li class="nav-item">
+    <form class="d-flex" role="search" action="/search" style="margin-right: 170px;" method="POST">
+        <div class="col-12 col-md-6"> <!-- Adjust column width as per your needs -->
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="search">
+        </div>
+        <button class="btn btn-outline-light" type="submit">Search</button>
+    </form>
+</li>
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
@@ -189,9 +223,53 @@
         {% block content %}{% endblock %}
 
         <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Grael Interiors 2025</p></div>
-        </footer>
+<!-- Footer-->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Social Media Links -->
+            <div class="col-12 text-center">
+                     <!-- WhatsApp Link -->
+                <a href="https://wa.me/+25401406923" target="_blank" class="btn btn-outline-light btn-floating m-1" style="font-size: 1.5rem;">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://www.facebook.com/yourpage" target="_blank" class="btn btn-outline-light btn-floating m-1" style="font-size: 1.5rem;">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://twitter.com/yourprofile" target="_blank" class="btn btn-outline-light btn-floating m-1" style="font-size: 1.5rem;">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.instagram.com/yourprofile" target="_blank" class="btn btn-outline-light btn-floating m-1" style="font-size: 1.5rem;">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <!-- Add more social media links as needed -->
+            </div>
+
+            <!-- Phone Number and Email -->
+            <div class="col-12 text-center mt-4">
+                <p class="text-white">
+                    <i class="fas fa-phone-alt"></i> <strong>Phone:</strong> <a href="tel:+25401406923" class="text-white">+25401406923</a>
+                </p>
+                <p class="text-white">
+                    <i class="fas fa-envelope"></i> <strong>Email:</strong> <a href="mailto:info@graellinteriors.com" class="text-white">info@graellinteriors.com</a>
+                </p>
+            </div>
+        </div>
+        
+        <p class="m-0 text-center text-white">Copyright &copy; Graell Interiors 2025</p>
+    </div>
+</footer>
+
+<script>
+  // Auto-dismiss flash messages after 3 seconds
+  setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+      const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+      bsAlert.close();
+    });
+  }, 3000); // 3000ms = 3 seconds
+</script>
 
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
