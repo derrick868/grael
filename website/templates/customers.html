@@ -3,6 +3,7 @@
 {% block title %} Customers {% endblock %}
 
 {% block content %}
+
 <div class="container mt-5">
     <h2 class="text-center text-dark mb-4">Customers</h2>
 
@@ -25,12 +26,12 @@
                     <td>{{ customer.date_joined.strftime('%B %d, %Y') }}</td>
 
                     <!-- Role Dropdown -->
-                    <td>
-                        <select class="form-select form-select-sm role-select" data-id="{{ customer.id }}">
-                            <option value="true" {% if customer.is_admin %}selected{% endif %}>Admin</option>
-                            <option value="false" {% if not customer.is_admin %}selected{% endif %}>Client</option>
-                        </select>
-                    </td>
+              <td>
+    <select class="form-select form-select-sm role-select" data-id="{{ customer.id }}">
+        <option value="admin" {% if customer.status == 'admin' %}selected{% endif %}>Admin</option>
+        <option value="user" {% if customer.status == 'user' %}selected{% endif %}>Client</option>
+    </select>
+</td>
 
                     <!-- Delete Button -->
                     <td>
@@ -51,22 +52,25 @@
 document.querySelectorAll('.role-select').forEach(select => {
     select.addEventListener('change', function () {
         const customerId = this.dataset.id;
-        const newRole = this.value;
+        const newRole = this.value;  // "admin" or "user"
+
+        // Get the CSRF token from the meta tag
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         fetch(`/update-role/${customerId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                // Include if using Flask-WTF or Django CSRF
+                'X-CSRFToken': csrfToken // Include CSRF token in the header
             },
-            body: JSON.stringify({ is_admin: newRole })
+            body: JSON.stringify({ status: newRole }) // Send "status" as role
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 alert('Role updated successfully!');
             } else {
-                alert('Failed to update role.');
+                alert(`Failed to update role: ${data.error}`);
             }
         })
         .catch(error => {
@@ -75,5 +79,6 @@ document.querySelectorAll('.role-select').forEach(select => {
         });
     });
 });
+
 </script>
 {% endblock %}

@@ -16,6 +16,10 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
+    <!-- Include CSRF token in a meta tag or JavaScript variable -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
+
         <style>
             /* Primary Button */
             .btn-primary {

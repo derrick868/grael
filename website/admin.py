@@ -184,17 +184,33 @@ def display_customers():
         customers = Customer.query.all()
         return render_template('customers.html', customers=customers)
     return render_template('404.html')
-
-
+    
 @admin.route('/update-role/<int:id>', methods=['POST'])
+@login_required
 def update_role(id):
+    if current_user.status != 'admin':  # Ensure only admins can update roles
+        return jsonify({'success': False, 'error': 'Unauthorized'}), 403
+
     customer = Customer.query.get_or_404(id)
     data = request.get_json()
-    if 'is_admin' in data:
-        customer.is_admin = data['is_admin'].lower() == 'true'
-        db.session.commit()
-        return jsonify({'success': True})
-    return jsonify({'success': False}), 400
+
+    if 'status' in data:
+        new_status = data['status']  # 'admin' or 'user'
+
+        if new_status not in ['admin', 'user']:  # Ensure only valid roles are accepted
+            return jsonify({'success': False, 'error': 'Invalid role'}), 400
+
+        try:
+            customer.status = new_status  # Update the role using status
+            db.session.commit()
+            return jsonify({'success': True, 'message': 'Role updated successfully'})
+        except Exception as e:
+            db.session.rollback()  # Rollback changes if something goes wrong
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    return jsonify({'success': False, 'error': 'Invalid data'}), 400
+
+
 
 @admin.route('/delete-customer/<int:customer_id>', methods=['GET', 'POST'])
 @login_required
