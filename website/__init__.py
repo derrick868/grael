@@ -1,35 +1,29 @@
-from flask import Flask,render_template
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_wtf.csrf import CSRFProtect
-
-
-
+import os
 
 db = SQLAlchemy()
-DB_NAME = 'database.sqlite3'
-
-def create_database():
-    db.create_all()
-    print('Database created!')
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'SKSKSKSKKS'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-    csrf = CSRFProtect(app)  
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'default_secret_key')
 
-    db.init_app(app)  # <-- Correct indentation
+    # Use PostgreSQL if DATABASE_URL is set, fallback to SQLite
+    db_url = os.getenv('DATABASE_URL', f"sqlite:///database.sqlite3")
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://")
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_url
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+    CSRFProtect(app)
+    db.init_app(app)
 
     from .views import views
     from .auth import auth
     from .admin import admin
-    from .models import Customer, Cart, Product, Order
-
-
-    @app.errorhandler(404)
-    def page_not_found(error):
-        return render_template('404.html')
+    from .models import Customer
 
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -39,11 +33,15 @@ def create_app():
     def load_user(id):
         return Customer.query.get(int(id))
 
+    @app.errorhandler(404)
+    def page_not_found(error):
+        return render_template('404.html')
+
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(admin, url_prefix='/')
 
     with app.app_context():
-        create_database()  # <-- Correct indentation
+        db.create_all()  # Only useful if tables don't exist
 
     return app
