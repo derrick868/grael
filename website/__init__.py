@@ -23,7 +23,7 @@ def create_app():
     from .views import views
     from .auth import auth
     from .admin import admin
-    from .models import Customer
+    from .models import Customer,Category
 
     login_manager = LoginManager()
     login_manager.init_app(app)
@@ -40,6 +40,11 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(admin, url_prefix='/')
+
+    @app.context_processor
+    def inject_categories():
+        categories = Category.query.all()
+        return dict(categories=categories)
 
     with app.app_context():
         db.create_all()  # Only useful if tables don't exist

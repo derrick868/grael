@@ -40,12 +40,24 @@ class Product(db.Model):
     product_picture = db.Column(db.String(1000), nullable=False)
     flash_sale = db.Column(db.Boolean, default=False)
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'), nullable=False)
+
+   
 
     carts = db.relationship('Cart', backref=db.backref('product', lazy=True))
     orders = db.relationship('Order', backref=db.backref('product', lazy=True))
 
     def __str__(self):
         return '<Product %r>' % self.product_name
+        
+class Category(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+
+    products = db.relationship('Product', backref='category', lazy=True)
+
+    def __str__(self):
+        return f'<Category {self.name}>'
 
 
 class Cart(db.Model):

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %} Shop Items {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container px-4 px-lg-5">
+                 {% if current_user.status == 'admin' %}
+                <a class="navbar-brand" href="/">Admin</a>
+                 {% endif %}/ <a class="navbar-brand{% if request.path == '/category-items' %}active{% endif %}" href="/category-items">Categories</a>/  <a class="navbar-brand{% if request.path == '/shop-items' %}active{% endif %}" href="/shop-items">All items</a>/  <a class="navbar-brand{% if request.path == '/customers' %}active{% endif %}" href="/customers">All Clients</a>/ <a class="navbar-brand{% if request.path == '/view-orders' %}active{% endif %}" href="/view-orders">All Orders</a>
+
+  
+
+                </div>
+            </nav>
+            </div>
+        
+        
+            </div>
+        </div>
+
+<div class="container my-5">
+
+    {% if items | length < 1 %}
+    <div class="alert alert-warning text-center" role="alert">
+        <h4>No Categories Available</h4>
+    </div>
+    {% else %}
+
+    <h2 class="text-center mb-4">Category List</h2>
+
+    <!-- Table for Shop Items -->
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                  
+                    <th scope="col">Category Name</th>
+                    <th scope="col">Updates</th>
+                    
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <th scope="row">{{ item.id }}</th>
+                    
+                   <td><a href="{{ url_for('admin.category_products', category_id=item.id) }}" class="text-light">{{ item.name }}</a></td>
+
+
+                   
+                    <td>
+                        <div class="d-flex">
+                            <a href="/update-category/{{ item.id }}" class="btn btn-warning btn-sm me-2">Update</a>
+                            <a href="/delete-category/{{ item.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% endif %}
+    
+</div>
+
+{% endblock %}

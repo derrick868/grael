@@ -17,6 +17,12 @@
             {{ form.product_name}}
         </div>
 
+        <div class="mb-3">
+    
+    {{ form.category(class="form-select") }}
+</div>
+
+
           <div class="mb-3">
             <label for="exampleInputEmail" class="form-label"><h4>Previous Price</h4></label>
             {{ form.previous_price}}
@@ -40,7 +46,7 @@
         </div>
         <div class="mb-3">
             <label for="exampleInputEmail" class="form-label"><h4></label>
-            {{ form.update_product()}}
+            {{ form.update_product(class="btn btn-primary btn-lg")}}
         </div>
     </form>
 

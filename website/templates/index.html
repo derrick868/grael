@@ -4,6 +4,45 @@
 
 {% block content %}
     <!-- Header Section with Background Image -->
+
+    <style type="text/css">
+        .category-navbar {
+  border-bottom: 1px solid #ddd;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* smooth scrolling on iOS */
+  scrollbar-width: none; /* Firefox */
+}
+
+.category-navbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+.category-link {
+  white-space: nowrap;          /* Keep links in one line */
+  font-weight: 500;
+  color: #555;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: background-color 0.3s, color 0.3s;
+  user-select: none;
+  cursor: pointer;
+}
+
+.category-link:hover {
+  color: #1877f2; /* Facebook blue */
+  background-color: #e7f3ff;
+  text-decoration: none;
+}
+
+.category-link.active, /* if you want to highlight current category */
+.category-link:focus {
+  color: white;
+  background-color: #1877f2;
+  outline: none;
+}
+
+    </style>
     <header class="bg-dark py-5" style="background-image: url('../static/assets/crock1.jpg'); background-size: cover; background-position: center;">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
@@ -12,7 +51,24 @@
             </div>
         </div>
     </header>
+<div class="primary mb-3 rounded shadow-sm p-3">
+  <nav class="category-navbar navbar navbar-expand-lg navbar-light bg-light py-2">
+    <div class="container-fluid overflow-auto d-flex align-items-center">
+      {% for category in categories %}
+        <div class="category-link px-3" style="cursor: pointer;"
+             onclick="window.location.href='{{ url_for('views.category_products', category_id=category.id) }}'"
+             tabindex="0"
+             onkeypress="if(event.key === 'Enter') window.location.href='{{ url_for('views.category_products', category_id=category.id) }}'">
+          {{ category.name }}
+        </div>
+      {% endfor %}
+    </div>
+  </nav>
+</div>
 
+
+
+   
     <!-- Product Section -->
     <section class="py-5" style="background-color: lightgrey;">
         <div class="container px-4 px-lg-5 mt-5">
