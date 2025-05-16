@@ -166,11 +166,193 @@ footer .text-white a {
 footer .text-white a:hover {
     color: #f5a623;  /* Change to a golden yellow on hover */
 }
+.offcanvas .nav-link {
+  color: #1d4d7e;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border-radius: 5px;
+  padding: 8px 15px;
+}
+
+.offcanvas .nav-link:hover, .offcanvas .nav-link.active {
+  background-color: #155a8a;
+  color: white;
+}
 
 
         </style>  
     </head>
     <body style="color: grey;">
+
+        <!-- Responsive Sidebar Offcanvas -->
+<!-- Responsive Sidebar Offcanvas -->
+<div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+  <div class="offcanvas-header bg-gradient-sidebar text-white">
+    <h5 class="offcanvas-title" id="sidebarMenuLabel">Menu</h5>
+    <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body bg-gradient-sidebar text-white d-flex flex-column p-0">
+
+    <!-- User Info Section -->
+    {% if current_user.is_authenticated %}
+    <div class="user-info d-flex align-items-center p-3 border-bottom border-secondary">
+      <img src="{{ current_user.avatar_url or url_for('static', filename='assets/logo.png') }}" alt="User Avatar" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+      <div class="user-info" style="color: #000;">
+        <strong>{{ current_user.username }}</strong><br>
+        <small>{{ current_user.email }}</small>
+      </div>
+    </div>
+    {% else %}
+  <p>Please log in</p>
+    {% endif %}
+
+    <ul class="navbar-nav flex-grow-1 px-3">
+
+      <li class="nav-item">
+        <a class="nav-link" href="/">
+          <i class="fas fa-home me-2"></i> Home
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/about">
+          <i class="fas fa-info-circle me-2"></i> About
+        </a>
+      </li>
+
+      <!-- Categories with collapsible submenu -->
+      <li class="nav-item">
+        <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#categoriesCollapse" role="button" aria-expanded="false" aria-controls="categoriesCollapse">
+          <span><i class="fas fa-th-list me-2"></i> Categories</span>
+          <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="collapse" id="categoriesCollapse">
+          <ul class="list-unstyled ps-3">
+            {% for category in categories %}
+            <li>
+              <a class="nav-link py-1" href="{{ url_for('views.category_products', category_id=category.id) }}">
+                <i class="fas fa-caret-right me-2"></i> {{ category.name }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </li>
+
+
+{% if current_user.status == 'admin' %}
+<li class="nav-item">
+  <a class="nav-link d-flex justify-content-between align-items-center" data-bs-toggle="collapse" href="#adminCollapse" role="button" aria-expanded="false" aria-controls="adminCollapse">
+    <span><i class="fas fa-user-shield me-2"></i> Admin</span>
+    <i class="fas fa-chevron-down"></i>
+  </a>
+  <div class="collapse" id="adminCollapse">
+    <ul class="list-unstyled ps-3">
+
+      <!-- Admin Home Link -->
+      <li>
+        <a class="nav-link py-1" href="/admin-page">
+          <i class="fas fa-home me-2"></i> Admin Home
+        </a>
+      </li>
+
+      <!-- Categories Submenu -->
+      <li>
+        <a class="nav-link d-flex justify-content-between align-items-center py-1" data-bs-toggle="collapse" href="#categoriesAdminCollapse" role="button" aria-expanded="false" aria-controls="categoriesAdminCollapse">
+          <span><i class="fas fa-th-list me-2"></i> Categories</span>
+          <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="collapse ps-3" id="categoriesAdminCollapse">
+          <ul class="list-unstyled">
+            <li><a class="nav-link py-1" href="/add-category"><i class="fas fa-plus me-2"></i> Add Category</a></li>
+            <li><a class="nav-link py-1" href="/category-items"><i class="fas fa-eye me-2"></i> View Categories</a></li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- Items Submenu -->
+      <li>
+        <a class="nav-link d-flex justify-content-between align-items-center py-1" data-bs-toggle="collapse" href="#itemsAdminCollapse" role="button" aria-expanded="false" aria-controls="itemsAdminCollapse">
+          <span><i class="fas fa-boxes me-2"></i> Items</span>
+          <i class="fas fa-chevron-down"></i>
+        </a>
+        <div class="collapse ps-3" id="itemsAdminCollapse">
+          <ul class="list-unstyled">
+            <li><a class="nav-link py-1" href="/add-item"><i class="fas fa-plus me-2"></i> Add Item</a></li>
+            <li><a class="nav-link py-1" href="/shop-items"><i class="fas fa-eye me-2"></i> View Items</a></li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <a class="nav-link py-1" href="/customers">
+          <i class="fas fa-users me-2"></i> All Clients
+        </a>
+      </li>
+
+      <li>
+        <a class="nav-link py-1" href="/view-orders">
+          <i class="fas fa-receipt me-2"></i> All Orders
+        </a>
+      </li>
+      
+    </ul>
+  </div>
+</li>
+{% endif %}
+
+
+
+
+
+      {% if current_user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link" href="/profile/{{ current_user.id }}">
+          <i class="fas fa-user me-2"></i> Profile
+        </a>
+      </li>
+      <li class="nav-item d-flex justify-content-between align-items-center">
+        <a class="nav-link" href="/orders">
+          <i class="fas fa-box me-2"></i> Orders
+        </a>
+        <span class="badge bg-danger rounded-pill me-3">3</span> <!-- Example badge -->
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">
+          <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="/login">
+          <i class="fas fa-sign-in-alt me-2"></i> Login
+        </a>
+      </li>
+      {% endif %}
+
+      <!-- Search Form -->
+      <li class="nav-item mt-3">
+        <form class="d-flex" role="search" action="/search" method="POST">
+          <input class="form-control me-2" type="search" name="search" placeholder="Search..." aria-label="Search">
+          <button class="btn btn-outline-light" type="submit">Search</button>
+        </form>
+      </li>
+
+    </ul>
+
+    <!-- Sidebar Footer Quick Links -->
+    <div class="sidebar-footer mt-auto p-3 border-top border-secondary">
+      <a href="/help" class="btn btn-outline-light w-100 mb-2">
+        <i class="fas fa-question-circle me-2"></i> Help
+      </a>
+      <a href="/profile/{{ current_user.id }}" class="btn btn-outline-light w-100">
+        <i class="fas fa-cog me-2"></i> Settings
+      </a>
+    </div>
+
+  </div>
+</div>
+
+
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container px-4 px-lg-5">
@@ -178,11 +360,30 @@ footer .text-white a:hover {
             <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Logo" style="height: 30px; margin-right: 10px;">
             Graell Interiors
         </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <!-- Sidebar Toggle Button for small screens -->
+<button class="btn btn-outline-primary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+  <i class="fas fa-bars"></i>
+</button>
+
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="/">Home</a></li>
                         <li class="nav-item"><a class="nav-link {% if request.path == '/about' %}active{% endif %}" href="/about">About</a></li>
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="sidebarCategoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Categories
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="sidebarCategoryDropdown">
+      {% for category in categories %}
+      <li>
+        <a class="dropdown-item" href="{{ url_for('views.category_products', category_id=category.id) }}">
+          {{ category.name }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </li>
+
 
                         {% if current_user.status == 'admin' %}
                             <li class="nav-item"><a class="nav-link" href="/admin-page">Admin</a></li>

@@ -3,24 +3,39 @@
 {% block title %} Shop Items {% endblock %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="info">
-                      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container px-4 px-lg-5">
-                 {% if current_user.status == 'admin' %}
-                <a class="navbar-brand" href="/">Admin</a>
-                 {% endif %}/ <a class="navbar-brand {% if request.path == '/category-items' %}active{% endif %}" href="/category-items">Categories</a>/  <a class="navbar-brand {% if request.path == '/shop-items' %}active{% endif %}" href="/shop-items">All items</a>/  <a class="navbar-brand{% if request.path == '/customers' %}active{% endif %}" href="/customers">All Clients</a>/ <a class="navbar-brand{% if request.path == '/view-orders' %}active{% endif %}" href="/view-orders">All Orders</a>
+<div class="row">
+  <div class="col-12">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-2">
+      <div class="container px-2 px-lg-5 d-flex flex-wrap justify-content-center gap-2">
 
-  
+        {% if current_user.status == 'admin' %}
+          <a href="/" class="btn btn-primary btn-sm flex-fill flex-md-auto">Admin</a>
+        {% endif %}
 
-                </div>
-            </nav>
-            </div>
-        
-        
-            </div>
-        </div>
+        <a href="/category-items" 
+           class="btn btn-outline-primary btn-sm flex-fill flex-md-auto {% if request.path == '/category-items' %}active{% endif %}">
+          Categories
+        </a>
+
+        <a href="/shop-items" 
+           class="btn btn-outline-primary btn-sm flex-fill flex-md-auto {% if request.path == '/shop-items' %}active{% endif %}">
+          All Items
+        </a>
+
+        <a href="/customers" 
+           class="btn btn-outline-primary btn-sm flex-fill flex-md-auto {% if request.path == '/customers' %}active{% endif %}">
+          All Clients
+        </a>
+
+        <a href="/view-orders" 
+           class="btn btn-outline-primary btn-sm flex-fill flex-md-auto {% if request.path == '/view-orders' %}active{% endif %}">
+          All Orders
+        </a>
+
+      </div>
+    </nav>
+  </div>
+</div>
 
 <div class="container my-5">
 
@@ -31,6 +46,11 @@
     {% else %}
 
     <h2 class="text-center mb-4">Shop Items List</h2>
+        <div class="mb-3 text-center">
+        <a href="/add-shop-items" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i> Add Items
+        </a>
+    </div>
 
     <!-- Table for Shop Items -->
     <div class="table-responsive">

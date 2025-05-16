@@ -10,7 +10,7 @@ views = Blueprint('views', __name__)
 @views.route('/')
 def home():
     items = Product.query.all()
-    return render_template('index.html', items=items, cart=Cart.query.filter_by(customer_link=current_user.id).all()
+    return render_template('index.html', items=items,active_category=None, cart=Cart.query.filter_by(customer_link=current_user.id).all()
                            if current_user.is_authenticated else [])
 
 @views.route('/about')
@@ -21,7 +21,7 @@ def about():
 def category_products(category_id):
     category = Category.query.get_or_404(category_id)
     products = Product.query.filter_by(category_id=category_id).all()
-    return render_template('cat_products.html', category=category, products=products, active_category_id=category_id)
+    return render_template('cat_products.html', category=category, products=products, active_category=category_id)
 
 
 @views.route('/add-to-cart/<int:item_id>')

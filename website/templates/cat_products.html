@@ -45,6 +45,26 @@
   color: white;
   border-radius: 20px;
 }
+<style>
+.transition {
+  transition: all 0.3s ease;
+}
+
+.transition:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.5rem 1rem rgba(0, 123, 255, 0.15);
+}
+
+.container-fluid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.container-fluid::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+</style>
+
 
     </style>
     <header class="bg-dark py-5" style="background-image: url('../static/assets/crock1.jpg'); background-size: cover; background-position: center;">
@@ -55,19 +75,24 @@
             </div>
         </div>
     </header>
-  
-<div class="primary mb-3 rounded shadow-sm p-3" style="opacity: 1; transition: none!important; display: block;">
+  <div class="primary mb-3 rounded shadow-sm p-3 bg-white">
+  <nav class="category-navbar navbar navbar-expand-lg navbar-light py-2">
+    <div class="container-fluid d-flex flex-nowrap overflow-auto gap-2 pb-2" style="scrollbar-width: thin;">
+      
+      <!-- "All" button -->
+      <button 
+        class="btn {% if not active_category %}btn-primary{% else %}btn-outline-primary{% endif %} btn-sm px-4 rounded-pill shadow-sm transition"
+        onclick="window.location.href='{{ url_for('views.home') }}'">
+        <i class="bi bi-grid me-1"></i> All
+      </button>
 
-  <nav class="category-navbar navbar navbar-expand-lg navbar-light bg-light py-2">
-    <div class="container-fluid overflow-auto d-flex align-items-center">
+      <!-- Dynamic category buttons -->
       {% for category in categories %}
-        <div class="category-link px-3 {% if category.id == active_category_id %}active{% endif %}" 
-             style="cursor: pointer;"
-             onclick="window.location.href='{{ url_for('views.category_products', category_id=category.id) }}'"
-             tabindex="0"
-             onkeypress="if(event.key === 'Enter') window.location.href='{{ url_for('views.category_products', category_id=category.id) }}'">
-          {{ category.name }}
-        </div>
+        <button 
+          class="btn {% if active_category == category.id %}btn-primary{% else %}btn-outline-primary{% endif %} btn-sm px-4 rounded-pill shadow-sm transition"
+          onclick="window.location.href='{{ url_for('views.category_products', category_id=category.id) }}'">
+          <i class="bi bi-tag me-1"></i> {{ category.name }}
+        </button>
       {% endfor %}
     </div>
   </nav>
@@ -75,9 +100,10 @@
 
 
 
+
     
     <!-- Product Section -->
-    <section class="py-5" style="background-color: lightgrey;">
+    <section class="py-0" style="background-color: lightgrey;">
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
