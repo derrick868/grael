@@ -342,10 +342,11 @@ footer .text-white a:hover {
 
       <!-- Search Form -->
       <li class="nav-item mt-3">
-        <form class="d-flex" role="search" action="/search" method="POST">
-          <input class="form-control me-2" type="search" name="search" placeholder="Search..." aria-label="Search">
-          <button class="btn btn-primary" type="submit">Search</button>
-        </form>
+  <form class="d-flex" role="search" action="/search" method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input class="form-control me-2" type="search" name="search" placeholder="Search..." aria-label="Search">
+  <button class="btn btn-primary" type="submit">Search</button>
+</form>
       </li>
 
     </ul>
