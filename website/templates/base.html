@@ -299,7 +299,15 @@ footer .text-white a:hover {
           <i class="fas fa-users me-2"></i> All Clients
         </a>
       </li>
-
+<li>
+    <a href="/cart" class="btn btn-primary d-flex align-items-center">
+    <i class="bi-cart-fill me-1"></i>
+    Cart
+    <span class="badge bg-dark text-white ms-1 rounded-pill">
+        {{ cart | length if cart | length > 0 else 0 }}
+    </span>
+</a>
+</li>
       <li>
         <a class="nav-link py-1" href="/view-orders">
           <i class="fas fa-receipt me-2"></i> All Orders
